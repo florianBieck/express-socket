@@ -22,27 +22,27 @@ wss.on('connection', (socket) => {
   socket.send(value)
 })
 server.listen(3003, () => {
-  console.log('Server gestarted')
+  console.log(new Date().toISOString() + ': Server gestarted')
 })
 
 button.watch(function (err, value) {
   if (err) {
-    console.log('Error during Button read', err);
+    console.log(new Date().toISOString() + ': Error during Button read', err);
     return;
   }
   if (value) {
-    console.log('Button clicked')
+    console.log(new Date().toISOString() + ': Button clicked')
     wss.clients.forEach(client => {
       client.send(button.readSync())
     })
   }
 });
-console.log('Watching Button on GPIO ' + pin)
-console.log('Current Button State is ' + button.readSync())
+console.log(new Date().toISOString() + ': Watching Button on GPIO ' + pin)
+console.log(new Date().toISOString() + ': Current Button State is ' + button.readSync())
 
 app.get('/state', (req, res) => {
   const value = button.readSync()
-  console.log('Button State is ' + value)
+  console.log(new Date().toISOString() + ': Button State is ' + value)
   res.send(value)
   wss.clients.forEach(client => {
     client.send(value)
